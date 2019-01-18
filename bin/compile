@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+# bin/compile <build-dir> <cache-dir>
+
+BUILD_DIR=$1
+CACHE_DIR=$2
+
+function topic() {
+  echo "-----> $*"
+}
+
+topic "Install Apple Transporter"
+
+INSTALL_DIR="$BUILD_DIR/itms"
+PKG_CACHE_DIR="$CACHE_DIR/itms"
+
+mkdir -p $INSTALL_DIR
+cd $INSTALL_DIR
+curl -L --silent $HEROKU_BUILDPACK_TRANSPORTER_DOWNLOAD_URL | tar xz
+
+topic "Writing profile script"
+mkdir -p $BUILD_DIR/.profile.d
+cat <<EOF >$BUILD_DIR/.profile.d/transporter.sh
+export PATH="\$PATH:\$HOME/itms/bin"
+EOF
+
+export PATH="$PATH:$BUILD_DIR/itms/bin"
+
+# give environment to later buildpacks
+export | grep -E -e ' (PATH)=' > "$LP_DIR/export"
