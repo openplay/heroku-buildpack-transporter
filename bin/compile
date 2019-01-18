@@ -1,14 +1,17 @@
 #!/usr/bin/env bash
-# bin/compile <build-dir> <cache-dir>
+# bin/compile <build> <cache> <env>
 
 BUILD_DIR=$1
 CACHE_DIR=$2
+ENV_DIR=$3
 
 function topic() {
   echo "-----> $*"
 }
 
 topic "Install Apple Transporter"
+
+export "$HEROKU_BUILDPACK_TRANSPORTER_DOWNLOAD_URL=$(cat $ENV_DIR/$HEROKU_BUILDPACK_TRANSPORTER_DOWNLOAD_URL)"
 
 INSTALL_DIR="$BUILD_DIR/itms"
 PKG_CACHE_DIR="$CACHE_DIR/itms"
