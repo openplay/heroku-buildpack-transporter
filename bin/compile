@@ -12,6 +12,7 @@ topic "Install Apple Transporter"
 
 INSTALL_DIR="$BUILD_DIR/itms"
 PKG_CACHE_DIR="$CACHE_DIR/itms"
+LP_DIR=`cd $(dirname $0); cd ..; pwd`
 
 mkdir -p $INSTALL_DIR
 cd $INSTALL_DIR
