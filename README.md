@@ -17,24 +17,32 @@ Instructions
   * Download the linux version
   * Install the linux version on a linux machine, read and accept the license
     terms
-  * Transporter will be installed to /usr/local/itms
+  * Transporter will be installed to `/usr/local/itms`
   * Package your installed transporter:
 
+    ```sh
     cd /usr/local
     tar -czvf iTMSTransporter_linux_<version>.tar.gz ./itms
+    ```
 
   * Upload your package to S3
 
+    ```sh
     aws s3 cp iTMSTransporter_linux_<version>.tar.gz s3://<bucket>/iTMSTransporter_linux_<version>.tar.gz
+    ```
 
   * Generate a signed URL for yourself, you may want a long expiration time
     (default is 1 hour)
 
+    ```sh
     aws s3 presign s3://<bucket>/iTMSTransporter_linux_<version>.tar.gz
+    ```
 
   * Set the URL on Heroku so the buildpack can access it
 
+    ```sh
     heroku config:set HEROKU_BUILDPACK_TRANSPORTER_DOWNLOAD_URL='<presigned URL>'
+    ```
 
   * Make sure the JVM is available in your Heroku build
     * https://devcenter.heroku.com/articles/using-multiple-buildpacks-for-an-app
