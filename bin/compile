@@ -11,15 +11,13 @@ function topic() {
 
 topic "Install Apple Transporter"
 
-export HEROKU_BUILDPACK_TRANSPORTER_DOWNLOAD_URL="$(cat $ENV_DIR/HEROKU_BUILDPACK_TRANSPORTER_DOWNLOAD_URL)"
-
-INSTALL_DIR="$BUILD_DIR/itms"
+INSTALL_DIR="$BUILD_DIR"
 PKG_CACHE_DIR="$CACHE_DIR/itms"
 LP_DIR=`cd $(dirname $0); cd ..; pwd`
 
 mkdir -p $INSTALL_DIR
 cd $INSTALL_DIR
-curl -L --silent $HEROKU_BUILDPACK_TRANSPORTER_DOWNLOAD_URL | tar xz
+curl -L --silent "$(cat $ENV_DIR/HEROKU_BUILDPACK_TRANSPORTER_DOWNLOAD_URL)" | tar xz
 
 topic "Writing profile script"
 mkdir -p $BUILD_DIR/.profile.d
