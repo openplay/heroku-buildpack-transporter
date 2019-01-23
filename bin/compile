@@ -11,21 +11,21 @@ function topic() {
 
 topic "Install Apple Transporter"
 
-INSTALL_DIR="$BUILD_DIR"
-PKG_CACHE_DIR="$CACHE_DIR/itms"
+INSTALL_DIR="$BUILD_DIR/vendor"
 LP_DIR=`cd $(dirname $0); cd ..; pwd`
+DOWNLOAD_URL=${HEROKU_BUILDPACK_TRANSPORTER_DOWNLOAD_URL-"$(cat $ENV_DIR/HEROKU_BUILDPACK_TRANSPORTER_DOWNLOAD_URL)"}
 
 mkdir -p $INSTALL_DIR
 cd $INSTALL_DIR
-curl -L --silent "$(cat $ENV_DIR/HEROKU_BUILDPACK_TRANSPORTER_DOWNLOAD_URL)" | tar xz
+curl -L --silent "$DOWNLOAD_URL" | tar xz
 
 topic "Writing profile script"
 mkdir -p $BUILD_DIR/.profile.d
 cat <<EOF >$BUILD_DIR/.profile.d/transporter.sh
-export PATH="\$PATH:\$HOME/itms/bin"
+export PATH="\$PATH:\$HOME/vendor/itms/bin"
 EOF
 
-export PATH="$PATH:$BUILD_DIR/itms/bin"
+export PATH="$PATH:$INSTALL_DIR/itms/bin"
 
 # give environment to later buildpacks
 export | grep -E -e ' (PATH)=' > "$LP_DIR/export"
